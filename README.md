@@ -1,6 +1,6 @@
 # ExampleAPICalls
 
-Working with the [Userify API](https://postman.userify.com/) is pretty simple with high-level tools like `curl` and `jq`. Some examples follow. Note that username and password can be either an API username and password (those are restricted to the post_shim API endpoint) or a regular username and password tunneled within HTTPS (TLS).
+Working with the [Userify](https://userify.com) [API](https://postman.userify.com/) is pretty simple with high-level tools like `curl` and `jq`. Some examples follow. Note that username and password can be either an API username and password (those are restricted to the post_shim API endpoint) or a regular username and password tunneled within HTTPS (TLS).
 
 Nearly all of the company data for a particular user ID can be retrieved in a single API call called "my companies", which includes all of the companies, projects, and user ID's. We can then use `jq` to filter that down to just the data we're looking for.
 
