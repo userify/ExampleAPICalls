@@ -37,14 +37,15 @@ user_id=$(userify_api $basepath/companies | jq -r .companies[0].admins[0])
 
 ```
 project_name="New Project"
-new_project_id=$(userify_api -d "{\"name\":\"$project_name\"}" $basepath/project/company_id/$company_id | jq -r .project_id)
+new_project_id=$(userify_api -d "{\"name\":\"$project_name\"}" $basepath/project/company_id/$company_id \
+  | jq -r .project_id)
 ```
 
 ### Create a new server group within this company
 
 ```
 servergroup_name="Demo Servers"
-new_servergroup_id=$(userify_api -d "{\"name\":\"$servergroup_name\"}" \
+servergroup_id=$(userify_api -d "{\"name\":\"$servergroup_name\"}" \
   $basepath/project/company_id/$company_id/parent_project_id/$new_project_id \
   | jq -r .project_id)
 ```
@@ -55,12 +56,12 @@ This applies root/sudo to this user account for all servers in this server group
 
 ```
 userify_api -X PUT -d "{}" \
-  $basepath/usergroup/company_id/$company_id/project_id/$new_servergroup_id/usergroup/linux_admins/user_id/$user_id
+ $basepath/usergroup/company_id/$company_id/project_id/$servergroup_id/usergroup/linux_admins/user_id/$user_id
 ```
 
 ### Retrieve the API ID and API Key for the new server group:
 
 ```
-userify_api $basepath/shim_installers/company_id/$company_id/project_id/$new_servergroup_id | jq -r .json | \
+userify_api $basepath/shim_installers/company_id/$company_id/project_id/$servergroup_id | jq -r .json | \
    jq  '.api_id + "," + .api_key'
 ```
