@@ -15,26 +15,32 @@ alias userify_api="curl -su username:secret "
 
 Let's start by retrieving a `company_id` for further calls. This `company_id` will be the first one returned if there are more than one. You can perform more complicated `jq` filtering if you have a specific one to work with.
 
-Choose a company ID (first in the list) from the user's companies:
+### Reviwing the full `companies` data dump
+
+```
+userify_api $basepath/companies | jq .
+```
+
+### Choose a company ID from the user's companies:
 
 ```
 company_id="$(userify_api $basepath/companies | jq -r .companies[0].id)"
 ```
 
-Also choose a user ID from the company administrators:
+### Choose a user ID from the company administrators:
 
 ```
 user_id=$(userify_api $basepath/companies | jq -r .companies[0].admins[0])
 ```
 
-Create a new top-level project within this company:
+### Create a new top-level project within this company
 
 ```
 project_name="New Project"
 new_project_id=$(userify_api -d "{\"name\":\"$project_name\"}" $basepath/project/company_id/$company_id | jq -r .project_id)
 ```
 
-Create a new server group within this company:
+### Create a new server group within this company
 
 ```
 servergroup_name="Demo Servers"
@@ -43,10 +49,18 @@ new_servergroup_id=$(userify_api -d "{\"name\":\"$servergroup_name\"}" \
   | jq -r .project_id)
 ```
 
-Grant "root" (Linux sudo privileges) to this user account for all servers in this server group:
+### Grant "root" (Linux sudo privileges)
+
+This applies root/sudo to this user account for all servers in this server group:
 
 ```
 userify_api -X PUT -d "{}" \
   $basepath/usergroup/company_id/$company_id/project_id/$new_servergroup_id/usergroup/linux_admins/user_id/$user_id
 ```
 
+### Retrieve the API ID and API Key for the new server group:
+
+```
+userify_api $basepath/shim_installers/company_id/$company_id/project_id/$new_servergroup_id | jq -r .json | \
+   jq  '.api_id + "," + .api_key'
+```
