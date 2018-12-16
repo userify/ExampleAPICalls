@@ -1,10 +1,12 @@
 # Example [Userify](https://userify.com) API Snippets
 
-Working with the [Userify API](https://postman.userify.com/) is pretty simple with high-level tools like `curl` and `jq`. Some examples follow. Note that username and password can be either an API username and password (those are restricted to the post_shim API endpoint) or a regular username and password tunneled within HTTPS (TLS).
+Working with the [Userify API](https://postman.userify.com/) is pretty simple with high-level tools like `curl` and `jq`. 
 
-Nearly all of the company data for a particular user ID can be retrieved in a single API call called "my companies", which includes all of the companies, projects, and user ID's. We can then use `jq` to filter that down to just the data we're looking for.
+These tasks are normally automated for you by the dashboard UI, but the API is easy to work with and can automate repetitive tasks once you know the IDs that are relevant. Some examples follow. Note that username and password can be either an API username and password (those are restricted to the post_shim API endpoint) or a regular username and password tunneled within HTTPS (TLS).
 
-In the following examples, we could optimize by just performing that my companies API call once and then reusing the data, but for simplicity and clarity we're explicitly re-calling it.
+Nearly all of the company data for a particular user ID can be retrieved in a single API called `my companies`, which includes all of the companies, projects, and user ID's. We can then use `jq` to filter that down to just the data we're looking for.
+
+In the following examples, we could optimize by just performing that `my companies` API call once and then reusing the data, but for simplicity and clarity we're explicitly re-calling it.
 
 All Userify API endpoints begin with /api/userify/, but you may need to adjust your API endpoint if you are working with a local (self-hosted) server such as Userify Express or Userify Enterprise.
 
